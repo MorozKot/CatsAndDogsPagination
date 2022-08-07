@@ -2,8 +2,7 @@ package android.bignerdranch.catsanddogs.presentation.adapters
 
 import android.bignerdranch.catsanddogs.databinding.ItemBinding
 import android.bignerdranch.catsanddogs.data.network.model.CatsFactDto
-import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
-import android.bignerdranch.catsanddogs.data.network.model.DogsResponse
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,18 +10,22 @@ import com.squareup.picasso.Picasso
 
 class AnimalAdapter : RecyclerView.Adapter<AnimalViewHolder>() {
 
-    var catsFactDtoList = emptyList<CatsFactDto>()
+/*    var catsFactDtoList = emptyList<String>()
 
-    fun setCatsList(catsResponse: CatsResponse) {
-        catsFactDtoList = catsResponse.data
+    fun setCatsList(catsResponse: CatsFactDto) {
+        catsFactDtoList = listOf(catsResponse.fact)
         notifyDataSetChanged()
-    }
+
+        Log.d("listDogs cats AnimalAdapter", "$catsFactDtoList")
+    }*/
 
     var listDogs = emptyList<String>()
 
-    fun setDogList(dogsResponse: DogsResponse) {
-        listDogs = dogsResponse.message
+    fun setDogList(dogsResponse: String) {
+        listDogs = listOf(dogsResponse)
         notifyDataSetChanged()
+
+        Log.d("listDogs AnimalAdapter", "$listDogs")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
@@ -38,11 +41,11 @@ class AnimalAdapter : RecyclerView.Adapter<AnimalViewHolder>() {
             val ivDogImage = binding.itemPoster
             Picasso.get().load(dogImageUrl).into(ivDogImage)
 
-            if (catsFactDtoList.isNotEmpty()) { //без этой проверки приложение крашится
-                val catFact = catsFactDtoList[position].fact
+/*            if (catsFactDtoList.isNotEmpty()) { //без этой проверки приложение крашится
+                val catFact = catsFactDtoList[position]
                 val itemText = binding.itemText
                 itemText.text = catFact
-            }
+            }*/
         }
     }
 

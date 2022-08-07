@@ -38,17 +38,26 @@ class StartFragment : Fragment() {
 
         animalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
 
-        animalViewModel.getCatModel()
+        animalViewModel.getDogs()
 
-        animalViewModel.getDogModel()
+/*
+        animalViewModel.dogL.forEach {
+            animalAdapter.setDogList(it)
+        }
+*/
+/*        animalAdapter.setDogList(animalViewModel.dogL)*/
 
-        animalViewModel.dogList.observe(viewLifecycleOwner) {
+        animalViewModel.shopList.observe(viewLifecycleOwner) {
             animalAdapter.setDogList(it)
         }
 
-        animalViewModel.catsList.observe(viewLifecycleOwner) {
+
+
+/*        animalViewModel.getCats()
+
+        animalViewModel.catL.forEach {
             animalAdapter.setCatsList(it)
-        }
+        }*/
     }
 
     private fun setMovieRecyclerListener(linearlayoutManager: LinearLayoutManager) {
@@ -64,9 +73,9 @@ class StartFragment : Fragment() {
                 if (visibleItemCount + pastVisibleItemCount >= totalItemCount
                     && pastVisibleItemCount >= 0
                 ) {
-                    animalViewModel.getCatModel()
+                    animalViewModel.getDogs()
 
-                    animalViewModel.getDogModel()
+                    animalViewModel.getCats()
                 }
             }
         })
