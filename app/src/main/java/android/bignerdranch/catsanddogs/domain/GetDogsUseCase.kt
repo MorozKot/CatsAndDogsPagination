@@ -1,6 +1,6 @@
 package android.bignerdranch.catsanddogs.domain
 
-import android.bignerdranch.catsanddogs.data.repository.AnimalRepositoryImpl
+import android.bignerdranch.catsanddogs.domain.repository.AnimalRepository
 
 /*
 class GetDogsUseCase(private val repository: AnimalRepositoryImpl
@@ -10,6 +10,6 @@ class GetDogsUseCase(private val repository: AnimalRepositoryImpl
 
 */
 
-class GetDogsUseCase(private val repository: AnimalRepositoryImpl) {
+class GetDogsUseCase(private val repository: AnimalRepository) {
     suspend fun start() = repository.getDogResponse()
 }

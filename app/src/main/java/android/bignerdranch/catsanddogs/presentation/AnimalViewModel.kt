@@ -1,68 +1,53 @@
 package android.bignerdranch.catsanddogs.presentation
 
-import android.app.Application
-import android.bignerdranch.catsanddogs.data.network.model.CatsFactDto
-import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
-import android.bignerdranch.catsanddogs.data.network.model.DogsResponse
-import android.bignerdranch.catsanddogs.data.repository.AnimalRepositoryImpl
 import android.bignerdranch.catsanddogs.domain.GetCatsUseCase
 import android.bignerdranch.catsanddogs.domain.GetDogsUseCase
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import android.bignerdranch.catsanddogs.domain.repository.AnimalRepositoryImpl
+import android.bignerdranch.catsanddogs.domain.repository.GetMoviesResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 
-class AnimalViewModel(application: Application) : AndroidViewModel(application) {
+class AnimalViewModel : ViewModel() {
 
-    private val repositoryCatsDogs = AnimalRepositoryImpl(application)
+    private val repositoryCatsDogs = AnimalRepositoryImpl()
 
     val getCatsUseCase = GetCatsUseCase(repositoryCatsDogs)
     val getDogsUseCase = GetDogsUseCase(repositoryCatsDogs)
 
+    private val _getMoviesResponse: MutableLiveData<MoviesStateVM?> = MutableLiveData(null)
+    val getMoviesResponse: LiveData<MoviesStateVM?> = _getMoviesResponse
 
-/*    fun getCatModel() {
+    val movieList = mutableListOf<String>()
+
+    fun getMovies(isAdditionalLoading: Boolean = false) {
         viewModelScope.launch {
-            catsList.value = getCatsUseCase.invoke()
-        }
-    }*/
-
-    val catsList: MutableLiveData<CatsFactDto> =
-        MutableLiveData()
-
-    val dogList: MutableLiveData<DogsResponse> =
-        MutableLiveData()
-
-    private var _shopList =  MutableLiveData<String>()
-    val shopList: LiveData<String>
-        get() = _shopList
-
-    val dogL = mutableListOf<String>()
-
-    fun getDogs() {
-        viewModelScope.launch {
-            getDogsUseCase.start().message.forEach {
-                if (!dogL.contains(it)) dogL.add(it)
-
-                _shopList.value = dogL.toString()
-
-                Log.d("getDogs AnimalViewModel", "$dogL")
-                Log.d("getDogs AnimalViewModel _shopList", "$shopList")
+            when (val result = getDogsUseCase.start()) {
+                is GetMoviesResult.Success -> {
+                    result.response.message.forEach {
+                        if (!movieList.contains(it)) movieList.add(it)
+                    }
+                    when (isAdditionalLoading) {
+                        true -> _getMoviesResponse.value =
+                            MoviesStateVM.MoreMovies(result.response.message)
+                        false -> _getMoviesResponse.value = MoviesStateVM.GotMovies(movieList)
+                    }
+                }
+                else -> {
+                    if (movieList.isEmpty()) _getMoviesResponse.value =
+                        MoviesStateVM.Error(result, result.error)
+                    else {
+                        _getMoviesResponse.value = MoviesStateVM.MoreMoviesError
+                    }
+                }
             }
         }
     }
 
-/*    val catL = mutableListOf<CatsFactDto>()
-
-    fun getCats() {
-        viewModelScope.launch {
-            getCatsUseCase.start().data.forEach {
-                if (!catL.contains(it)) catL.add(it)
-
-                Log.d("getDogs AnimalViewModel", "$catL")
-            }
-        }
-    }*/
+    fun loadMore() {
+        getMovies(true)
+    }
 }

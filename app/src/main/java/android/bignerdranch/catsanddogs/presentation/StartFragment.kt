@@ -3,6 +3,7 @@ package android.bignerdranch.catsanddogs.presentation
 import android.bignerdranch.catsanddogs.databinding.FragmentStartBinding
 import android.bignerdranch.catsanddogs.presentation.adapters.AnimalAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
-    private lateinit var animalAdapter: AnimalAdapter
     private lateinit var animalViewModel: AnimalViewModel
+    private var adapter: AnimalAdapter? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,41 +25,46 @@ class StartFragment : Fragment() {
     ): View {
         binding = FragmentStartBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        animalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
+
+        animalViewModel.getMovies()
+
+        observeData()
+
+    }
+
+    private fun observeData() {
+        animalViewModel.getMoviesResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is MoviesStateVM.GotMovies -> {
+                    setupMovieRecycler(result.list)
+                }
+                is MoviesStateVM.MoreMovies -> {
+                    result.more?.let {
+                        adapter?.addNewItems(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupMovieRecycler(results: List<String>?) {
+
+        Log.d("проверка StartFragment", "$results")
+
+        adapter = AnimalAdapter(movieList = results ?: emptyList())
+        binding.recyclerViewAnimals.adapter = adapter
+
         val linearlayoutManager = LinearLayoutManager(activity?.baseContext)
         binding.recyclerViewAnimals.layoutManager = linearlayoutManager
         setMovieRecyclerListener(linearlayoutManager)
 
-        animalAdapter = AnimalAdapter()
-
-        binding.recyclerViewAnimals.adapter = animalAdapter
-
-        animalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
-
-        animalViewModel.getDogs()
-
-/*
-        animalViewModel.dogL.forEach {
-            animalAdapter.setDogList(it)
-        }
-*/
-/*        animalAdapter.setDogList(animalViewModel.dogL)*/
-
-        animalViewModel.shopList.observe(viewLifecycleOwner) {
-            animalAdapter.setDogList(it)
-        }
-
-
-
-/*        animalViewModel.getCats()
-
-        animalViewModel.catL.forEach {
-            animalAdapter.setCatsList(it)
-        }*/
     }
 
     private fun setMovieRecyclerListener(linearlayoutManager: LinearLayoutManager) {
@@ -73,9 +80,7 @@ class StartFragment : Fragment() {
                 if (visibleItemCount + pastVisibleItemCount >= totalItemCount
                     && pastVisibleItemCount >= 0
                 ) {
-                    animalViewModel.getDogs()
-
-                    animalViewModel.getCats()
+                    animalViewModel.loadMore()
                 }
             }
         })
