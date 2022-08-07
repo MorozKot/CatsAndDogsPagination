@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartFragment">
+    tools:context=".presentation.StartFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewAnimals"
@@ -12,10 +12,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

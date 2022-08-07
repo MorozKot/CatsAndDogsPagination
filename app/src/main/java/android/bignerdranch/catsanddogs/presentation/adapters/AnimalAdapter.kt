@@ -1,15 +1,15 @@
-package android.bignerdranch.catsanddogs
+package android.bignerdranch.catsanddogs.presentation.adapters
 
 import android.bignerdranch.catsanddogs.databinding.ItemBinding
-import android.bignerdranch.catsanddogs.model.CatsFactDto
-import android.bignerdranch.catsanddogs.model.CatsResponse
-import android.bignerdranch.catsanddogs.model.DogsResponse
+import android.bignerdranch.catsanddogs.data.network.model.CatsFactDto
+import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
+import android.bignerdranch.catsanddogs.data.network.model.DogsResponse
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class CatsDogsAdapter : RecyclerView.Adapter<CatsDogsViewHolder>() {
+class AnimalAdapter : RecyclerView.Adapter<AnimalViewHolder>() {
 
     var catsFactDtoList = emptyList<CatsFactDto>()
 
@@ -25,13 +25,13 @@ class CatsDogsAdapter : RecyclerView.Adapter<CatsDogsViewHolder>() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatsDogsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemBinding.inflate(layoutInflater, parent, false)
-        return CatsDogsViewHolder(binding)
+        return AnimalViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CatsDogsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
         val dogImageUrl = listDogs[position]
 
         with(holder) {

@@ -1,6 +1,7 @@
-package android.bignerdranch.catsanddogs
+package android.bignerdranch.catsanddogs.presentation
 
 import android.bignerdranch.catsanddogs.databinding.FragmentStartBinding
+import android.bignerdranch.catsanddogs.presentation.adapters.AnimalAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class StartFragment : Fragment() {
 
-    private lateinit var adapter: CatsDogsAdapter
     private lateinit var binding: FragmentStartBinding
-    private lateinit var catsDogsViewModel: CatsDogsViewModel
-    private lateinit var recyclerViewAnimals: RecyclerView
+    private lateinit var animalAdapter: AnimalAdapter
+    private lateinit var animalViewModel: AnimalViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,34 +28,31 @@ class StartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        catsDogsViewModel = ViewModelProvider(this).get(CatsDogsViewModel::class.java)
-
-        adapter = CatsDogsAdapter()
-
-        recyclerViewAnimals = binding.recyclerViewAnimals
-
-        recyclerViewAnimals.adapter = adapter
-
         val linearlayoutManager = LinearLayoutManager(activity?.baseContext)
         binding.recyclerViewAnimals.layoutManager = linearlayoutManager
         setMovieRecyclerListener(linearlayoutManager)
 
-        recyclerViewAnimals.setHasFixedSize(true)
+        animalAdapter = AnimalAdapter()
 
-        catsDogsViewModel.load()
+        binding.recyclerViewAnimals.adapter = animalAdapter
 
-        catsDogsViewModel.dogsList.observe(viewLifecycleOwner) {
-            adapter.setDogList(it)
+        animalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
+
+        animalViewModel.getCatModel()
+
+        animalViewModel.getDogModel()
+
+        animalViewModel.dogList.observe(viewLifecycleOwner) {
+            animalAdapter.setDogList(it)
         }
 
-        catsDogsViewModel.catsList.observe(viewLifecycleOwner) {
-            adapter.setCatsList(it)
+        animalViewModel.catsList.observe(viewLifecycleOwner) {
+            animalAdapter.setCatsList(it)
         }
     }
 
     private fun setMovieRecyclerListener(linearlayoutManager: LinearLayoutManager) {
-
-        recyclerViewAnimals.addOnScrollListener(object :
+        binding.recyclerViewAnimals.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -67,7 +64,9 @@ class StartFragment : Fragment() {
                 if (visibleItemCount + pastVisibleItemCount >= totalItemCount
                     && pastVisibleItemCount >= 0
                 ) {
-                    catsDogsViewModel.load()
+                    animalViewModel.getCatModel()
+
+                    animalViewModel.getDogModel()
                 }
             }
         })

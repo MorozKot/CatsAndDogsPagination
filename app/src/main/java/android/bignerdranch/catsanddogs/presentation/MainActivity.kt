@@ -1,5 +1,6 @@
-package android.bignerdranch.catsanddogs
+package android.bignerdranch.catsanddogs.presentation
 
+import android.bignerdranch.catsanddogs.R
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 

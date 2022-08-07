@@ -1,4 +1,4 @@
-package android.bignerdranch.catsanddogs.api
+package android.bignerdranch.catsanddogs.data.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
