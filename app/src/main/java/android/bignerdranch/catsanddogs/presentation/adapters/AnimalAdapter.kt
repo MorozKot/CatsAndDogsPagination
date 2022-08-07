@@ -1,20 +1,17 @@
 package android.bignerdranch.catsanddogs.presentation.adapters
 
 import android.bignerdranch.catsanddogs.databinding.ItemBinding
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class AnimalAdapter(private val movieList: List<String>): RecyclerView.Adapter<AnimalViewHolder>() {
+class AnimalAdapter(private val dogsList: List<String>) : RecyclerView.Adapter<AnimalViewHolder>() {
 
-    private var list = mutableListOf<String>()
+    private var mutableDogList = mutableListOf<String>()
 
     init {
-        list.addAll(movieList)
-
-        Log.d("проверка AnimalAdapter", "$list")
+        mutableDogList.addAll(dogsList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
@@ -24,7 +21,7 @@ class AnimalAdapter(private val movieList: List<String>): RecyclerView.Adapter<A
     }
 
     override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
-        val dogImageUrl = list[position]
+        val dogImageUrl = mutableDogList[position]
 
         with(holder) {
             val ivDogImage = binding.itemPoster
@@ -33,11 +30,11 @@ class AnimalAdapter(private val movieList: List<String>): RecyclerView.Adapter<A
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return mutableDogList.size
     }
 
-    fun addNewItems(items: List<String>){
-        list.addAll(items)
+    fun addNewItems(items: List<String>) {
+        mutableDogList.addAll(items)
         notifyDataSetChanged()
     }
 }

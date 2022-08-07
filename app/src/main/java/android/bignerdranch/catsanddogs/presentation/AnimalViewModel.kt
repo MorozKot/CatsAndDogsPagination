@@ -3,7 +3,7 @@ package android.bignerdranch.catsanddogs.presentation
 import android.bignerdranch.catsanddogs.domain.GetCatsUseCase
 import android.bignerdranch.catsanddogs.domain.GetDogsUseCase
 import android.bignerdranch.catsanddogs.domain.repository.AnimalRepositoryImpl
-import android.bignerdranch.catsanddogs.domain.repository.GetMoviesResult
+import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,29 +18,29 @@ class AnimalViewModel : ViewModel() {
     val getCatsUseCase = GetCatsUseCase(repositoryCatsDogs)
     val getDogsUseCase = GetDogsUseCase(repositoryCatsDogs)
 
-    private val _getMoviesResponse: MutableLiveData<MoviesStateVM?> = MutableLiveData(null)
-    val getMoviesResponse: LiveData<MoviesStateVM?> = _getMoviesResponse
+    private val _getDogsResponse: MutableLiveData<DogsStateVM?> = MutableLiveData(null)
+    val getDogsResponse: LiveData<DogsStateVM?> = _getDogsResponse
 
-    val movieList = mutableListOf<String>()
+    val dogsList = mutableListOf<String>()
 
-    fun getMovies(isAdditionalLoading: Boolean = false) {
+    fun getDogs(isAdditionalLoading: Boolean = false) {
         viewModelScope.launch {
             when (val result = getDogsUseCase.start()) {
-                is GetMoviesResult.Success -> {
+                is GetDogsResult.Success -> {
                     result.response.message.forEach {
-                        if (!movieList.contains(it)) movieList.add(it)
+                        if (!dogsList.contains(it)) dogsList.add(it)
                     }
                     when (isAdditionalLoading) {
-                        true -> _getMoviesResponse.value =
-                            MoviesStateVM.MoreMovies(result.response.message)
-                        false -> _getMoviesResponse.value = MoviesStateVM.GotMovies(movieList)
+                        true -> _getDogsResponse.value =
+                            DogsStateVM.MoreDogs(result.response.message)
+                        false -> _getDogsResponse.value = DogsStateVM.GotDogs(dogsList)
                     }
                 }
                 else -> {
-                    if (movieList.isEmpty()) _getMoviesResponse.value =
-                        MoviesStateVM.Error(result, result.error)
+                    if (dogsList.isEmpty()) _getDogsResponse.value =
+                        DogsStateVM.Error(result, result.error)
                     else {
-                        _getMoviesResponse.value = MoviesStateVM.MoreMoviesError
+                        _getDogsResponse.value = DogsStateVM.MoreDogsError
                     }
                 }
             }
@@ -48,6 +48,6 @@ class AnimalViewModel : ViewModel() {
     }
 
     fun loadMore() {
-        getMovies(true)
+        getDogs(true)
     }
 }

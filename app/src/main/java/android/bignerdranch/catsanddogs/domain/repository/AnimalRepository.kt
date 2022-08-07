@@ -4,7 +4,7 @@ import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
 
 interface AnimalRepository {
 
-    suspend fun getDogResponse(): GetMoviesResult
+    suspend fun getDogResponse(): GetDogsResult
 
     suspend fun getCatResponse(): CatsResponse
 }

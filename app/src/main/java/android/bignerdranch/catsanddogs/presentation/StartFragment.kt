@@ -3,7 +3,6 @@ package android.bignerdranch.catsanddogs.presentation
 import android.bignerdranch.catsanddogs.databinding.FragmentStartBinding
 import android.bignerdranch.catsanddogs.presentation.adapters.AnimalAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,7 @@ class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
     private lateinit var animalViewModel: AnimalViewModel
-    private var adapter: AnimalAdapter? = null
-
+    private lateinit var animalAdapter: AnimalAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,29 +23,25 @@ class StartFragment : Fragment() {
     ): View {
         binding = FragmentStartBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         animalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
-
-        animalViewModel.getMovies()
-
+        animalViewModel.getDogs()
         observeData()
-
     }
 
     private fun observeData() {
-        animalViewModel.getMoviesResponse.observe(viewLifecycleOwner) { result ->
+        animalViewModel.getDogsResponse.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is MoviesStateVM.GotMovies -> {
+                is DogsStateVM.GotDogs -> {
                     setupMovieRecycler(result.list)
                 }
-                is MoviesStateVM.MoreMovies -> {
+                is DogsStateVM.MoreDogs -> {
                     result.more?.let {
-                        adapter?.addNewItems(it)
+                        animalAdapter.addNewItems(it)
                     }
                 }
             }
@@ -55,16 +49,12 @@ class StartFragment : Fragment() {
     }
 
     private fun setupMovieRecycler(results: List<String>?) {
-
-        Log.d("проверка StartFragment", "$results")
-
-        adapter = AnimalAdapter(movieList = results ?: emptyList())
-        binding.recyclerViewAnimals.adapter = adapter
+        animalAdapter = AnimalAdapter(dogsList = results ?: emptyList())
+        binding.recyclerViewAnimals.adapter = animalAdapter
 
         val linearlayoutManager = LinearLayoutManager(activity?.baseContext)
         binding.recyclerViewAnimals.layoutManager = linearlayoutManager
         setMovieRecyclerListener(linearlayoutManager)
-
     }
 
     private fun setMovieRecyclerListener(linearlayoutManager: LinearLayoutManager) {

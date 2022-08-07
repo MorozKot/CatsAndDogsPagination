@@ -3,52 +3,56 @@ package android.bignerdranch.catsanddogs.domain.repository
 import android.bignerdranch.catsanddogs.data.network.RetrofitInstance
 import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
 
-class AnimalRepositoryImpl: AnimalRepository {
+class AnimalRepositoryImpl : AnimalRepository {
 
     private val apiDogs = RetrofitInstance.apiDogs
 
     private val apiCats = RetrofitInstance.apiCats
 
-    override suspend fun getDogResponse(): GetMoviesResult {
-        var result: GetMoviesResult = GetMoviesResult.EnqueueError("MoviesRepositoryImpl getMovies not working")
+    override suspend fun getDogResponse(): GetDogsResult {
+        var result: GetDogsResult =
+            GetDogsResult.EnqueueError("AnimalRepositoryImpl getDogResponse not working")
         try {
-            val call =  apiDogs.dogsResponse()
-            when{
-                call.isSuccessful->{
+            val call = apiDogs.dogsResponse()
+            when {
+                call.isSuccessful -> {
                     call.body()?.let {
-                        result = GetMoviesResult.Success(it)
+                        result = GetDogsResult.Success(it)
                     } ?: run {
-                        result = GetMoviesResult.ServerError(
+                        result = GetDogsResult.ServerError(
                             error = call.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                         )
                     }
                 }
-                call.code() in 400..499 ->{
-                    result = GetMoviesResult.ServerError(
-                        error = "Client Error: ${call.errorBody()?.source()?.buffer?.snapshot()?.utf8()}"
+                call.code() in 400..499 -> {
+                    result = GetDogsResult.ServerError(
+                        error = "Client Error: ${
+                            call.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        }"
                     )
                 }
-                call.code() in 500..599 ->{
-                    result = GetMoviesResult.ServerError(
-                        error = "Server Error: ${call.errorBody()?.source()?.buffer?.snapshot()?.utf8()}"
+                call.code() in 500..599 -> {
+                    result = GetDogsResult.ServerError(
+                        error = "Server Error: ${
+                            call.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        }"
                     )
-
                 }
                 else -> {
-                    result = GetMoviesResult.ServerError(
-                        error = "Unknown Error: ${call.errorBody()?.source()?.buffer?.snapshot()?.utf8()}"
+                    result = GetDogsResult.ServerError(
+                        error = "Unknown Error: ${
+                            call.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        }"
                     )
-
                 }
             }
         } catch (e: Exception) {
-            result = GetMoviesResult.ConnectionError()
+            result = GetDogsResult.ConnectionError()
         }
         return result
     }
 
     override suspend fun getCatResponse(): CatsResponse {
-
         return apiCats.catsResponse()
     }
 }
