@@ -15,7 +15,7 @@ class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
     private lateinit var animalViewModel: AnimalViewModel
-    private lateinit var animalAdapter: AnimalAdapter
+    private var animalAdapter: AnimalAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +41,7 @@ class StartFragment : Fragment() {
                 }
                 is DogsStateVM.MoreDogs -> {
                     result.more?.let {
-                        animalAdapter.addNewItems(it)
+                        animalAdapter?.addNewItems(it)
                     }
                 }
                 else -> {
