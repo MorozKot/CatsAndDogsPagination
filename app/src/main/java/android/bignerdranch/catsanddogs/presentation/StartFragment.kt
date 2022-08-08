@@ -28,7 +28,7 @@ class StartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        animalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
+        animalViewModel = ViewModelProvider(this)[AnimalViewModel::class.java]
         animalViewModel.getDogs()
         observeData()
     }
@@ -37,18 +37,21 @@ class StartFragment : Fragment() {
         animalViewModel.getDogsResponse.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is DogsStateVM.GotDogs -> {
-                    setupMovieRecycler(result.list)
+                    setupRecycler(result.list)
                 }
                 is DogsStateVM.MoreDogs -> {
                     result.more?.let {
                         animalAdapter.addNewItems(it)
                     }
                 }
+                else -> {
+                    DogsStateVM.MoreDogsError
+                }
             }
         }
     }
 
-    private fun setupMovieRecycler(results: List<String>?) {
+    private fun setupRecycler(results: List<String>?) {
         animalAdapter = AnimalAdapter(dogsList = results ?: emptyList())
         binding.recyclerViewAnimals.adapter = animalAdapter
 

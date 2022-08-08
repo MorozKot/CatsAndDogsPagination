@@ -1,7 +1,9 @@
-package android.bignerdranch.catsanddogs.domain.repository
+package android.bignerdranch.catsanddogs.data.repository
 
 import android.bignerdranch.catsanddogs.data.network.RetrofitInstance
 import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
+import android.bignerdranch.catsanddogs.domain.repository.AnimalRepository
+import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
 
 class AnimalRepositoryImpl : AnimalRepository {
 

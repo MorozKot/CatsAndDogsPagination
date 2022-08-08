@@ -1,6 +1,6 @@
 package android.bignerdranch.catsanddogs.domain
 
-import android.bignerdranch.catsanddogs.domain.repository.AnimalRepositoryImpl
+import android.bignerdranch.catsanddogs.data.repository.AnimalRepositoryImpl
 
 class GetCatsUseCase(private val repository: AnimalRepositoryImpl
 ) {

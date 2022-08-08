@@ -2,7 +2,7 @@ package android.bignerdranch.catsanddogs.presentation
 
 import android.bignerdranch.catsanddogs.domain.GetCatsUseCase
 import android.bignerdranch.catsanddogs.domain.GetDogsUseCase
-import android.bignerdranch.catsanddogs.domain.repository.AnimalRepositoryImpl
+import android.bignerdranch.catsanddogs.data.repository.AnimalRepositoryImpl
 import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
