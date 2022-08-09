@@ -2,6 +2,10 @@ package android.bignerdranch.catsanddogs.presentation
 
 import android.bignerdranch.catsanddogs.databinding.FragmentStartBinding
 import android.bignerdranch.catsanddogs.presentation.adapters.AnimalAdapter
+import android.bignerdranch.catsanddogs.presentation.viewmodel.AnimalViewModel
+import android.bignerdranch.catsanddogs.presentation.viewmodel.DogsStateVM
+import android.bignerdranch.catsanddogs.presentation.viewmodel.ViewModelFactory
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +14,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
 
 class StartFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var binding: FragmentStartBinding
     private lateinit var animalViewModel: AnimalViewModel
     private var animalAdapter: AnimalAdapter? = null
+
+    private val component by lazy {
+        (requireActivity().application as AnimalApp).component
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +45,7 @@ class StartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        animalViewModel = ViewModelProvider(this)[AnimalViewModel::class.java]
+        animalViewModel = ViewModelProvider(this, viewModelFactory)[AnimalViewModel::class.java]
         animalViewModel.getDogs()
         observeData()
     }

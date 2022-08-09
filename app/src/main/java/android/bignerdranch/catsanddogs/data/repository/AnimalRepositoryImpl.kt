@@ -4,8 +4,9 @@ import android.bignerdranch.catsanddogs.data.network.RetrofitInstance
 import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
 import android.bignerdranch.catsanddogs.domain.repository.AnimalRepository
 import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
+import javax.inject.Inject
 
-class AnimalRepositoryImpl : AnimalRepository {
+class AnimalRepositoryImpl @Inject constructor() : AnimalRepository {
 
     private val apiDogs = RetrofitInstance.apiDogs
 

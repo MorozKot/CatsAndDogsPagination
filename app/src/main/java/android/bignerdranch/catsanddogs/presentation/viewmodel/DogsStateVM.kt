@@ -1,4 +1,4 @@
-package android.bignerdranch.catsanddogs.presentation
+package android.bignerdranch.catsanddogs.presentation.viewmodel
 
 import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
 

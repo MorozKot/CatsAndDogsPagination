@@ -1,8 +1,9 @@
 package android.bignerdranch.catsanddogs.domain
 
-import android.bignerdranch.catsanddogs.data.repository.AnimalRepositoryImpl
+import android.bignerdranch.catsanddogs.domain.repository.AnimalRepository
+import javax.inject.Inject
 
-class GetCatsUseCase(private val repository: AnimalRepositoryImpl
+class GetCatsUseCase @Inject constructor(private val repository: AnimalRepository
 ) {
     suspend fun start() = repository.getCatResponse()
 }

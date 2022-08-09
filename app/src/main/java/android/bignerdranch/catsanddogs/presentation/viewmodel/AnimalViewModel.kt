@@ -1,22 +1,24 @@
-package android.bignerdranch.catsanddogs.presentation
+package android.bignerdranch.catsanddogs.presentation.viewmodel
 
 import android.bignerdranch.catsanddogs.domain.GetCatsUseCase
 import android.bignerdranch.catsanddogs.domain.GetDogsUseCase
-import android.bignerdranch.catsanddogs.data.repository.AnimalRepositoryImpl
 import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class AnimalViewModel: ViewModel() {
+class AnimalViewModel @Inject constructor(
+    private val getCatsUseCase: GetCatsUseCase,
+    private val getDogsUseCase: GetDogsUseCase
+) : ViewModel() {
 
+/*
     private val repositoryCatsDogs = AnimalRepositoryImpl()
-
-    val getCatsUseCase = GetCatsUseCase(repositoryCatsDogs)
-    val getDogsUseCase = GetDogsUseCase(repositoryCatsDogs)
+*/
 
     private val _getDogsResponse: MutableLiveData<DogsStateVM?> = MutableLiveData(null)
     val getDogsResponse: LiveData<DogsStateVM?> = _getDogsResponse
