@@ -6,6 +6,6 @@ import android.bignerdranch.catsanddogs.di.DaggerApplicationComponent
 class AnimalApp: Application() {
 
     val component by lazy {
-        DaggerApplicationComponent.factory().create(this)
+        DaggerApplicationComponent.factory().create()
     }
 }

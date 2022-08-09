@@ -1,16 +1,17 @@
 package android.bignerdranch.catsanddogs.data.repository
 
-import android.bignerdranch.catsanddogs.data.network.RetrofitInstance
+import android.bignerdranch.catsanddogs.data.network.ApiCats
+import android.bignerdranch.catsanddogs.data.network.ApiDogs
 import android.bignerdranch.catsanddogs.data.network.model.CatsResponse
 import android.bignerdranch.catsanddogs.domain.repository.AnimalRepository
 import android.bignerdranch.catsanddogs.domain.repository.GetDogsResult
 import javax.inject.Inject
 
-class AnimalRepositoryImpl @Inject constructor() : AnimalRepository {
+class AnimalRepositoryImpl @Inject constructor(
+    private val apiDogs: ApiDogs,
+    private val apiCats: ApiCats
+) : AnimalRepository {
 
-    private val apiDogs = RetrofitInstance.apiDogs
-
-    private val apiCats = RetrofitInstance.apiCats
 
     override suspend fun getDogResponse(): GetDogsResult {
         var result: GetDogsResult =

@@ -5,17 +5,13 @@ import android.bignerdranch.catsanddogs.presentation.StartFragment
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [DataModule::class, ViewModelModule::class])
+@Component(modules = [ViewModelModule::class, NetworkModule::class])
 interface ApplicationComponent {
 
     fun inject(fragment: StartFragment)
 
     @Component.Factory
     interface Factory {
-        fun create(
-            @BindsInstance application: Application
-        ) : ApplicationComponent
+        fun create() : ApplicationComponent
     }
-
-    //TODO Проверить работает ли без @BindsInstance application: Application
 }
