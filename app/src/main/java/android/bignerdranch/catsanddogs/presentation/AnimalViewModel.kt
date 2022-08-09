@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 
-class AnimalViewModel : ViewModel() {
+class AnimalViewModel: ViewModel() {
 
     private val repositoryCatsDogs = AnimalRepositoryImpl()
 
